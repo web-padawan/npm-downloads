@@ -1,0 +1,43 @@
+{
+  "name": "npm-downloads",
+  "version": "0.1.0",
+  "description": "Get the npm downloads per package version as a table",
+  "main": "index.js",
+  "bin": "index.js",
+  "author": "Serhii Kulykov <serguey.kulykov@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "npm",
+    "downloads",
+    "puppeteer"
+  ],
+  "scripts": {
+    "lint": "eslint *.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "meow": "^9.0.0",
+    "puppeteer": "^6.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1"
+  }
+}
