@@ -1,19 +1,9 @@
 {
   "name": "npm-downloads",
-  "version": "0.1.0",
+  "private": true,
   "description": "Get the npm downloads per package version as a table",
-  "main": "index.js",
-  "bin": "index.js",
   "author": "Serhii Kulykov <serguey.kulykov@gmail.com>",
   "license": "MIT",
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "npm",
-    "downloads",
-    "puppeteer"
-  ],
   "scripts": {
     "lint": "eslint *.js"
   },
@@ -29,8 +19,7 @@
     ]
   },
   "dependencies": {
-    "meow": "^9.0.0",
-    "puppeteer": "^6.0.0"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "eslint": "^7.19.0",
