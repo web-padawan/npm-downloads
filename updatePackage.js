@@ -19,7 +19,18 @@ async function main() {
   const saved = await readFile(path.join(__dirname, 'docs', `${package}.json`));
   const savedData = JSON.parse(saved);
 
-  savedData[date] = data.downloads;
+  if (!savedData.downloads) {
+    savedData.downloads = {};
+  }
+
+  const { downloads } = data;
+
+  for (let key in downloads) {
+    if (!savedData[key]) {
+      savedData.downloads[key] = {};
+    }
+    savedData.downloads[key][date] = downloads[key];
+  }
 
   const updatedJson = JSON.stringify(savedData, null, 2);
   await writeFile(path.join(__dirname, 'docs', `${package}.json`), updatedJson);
