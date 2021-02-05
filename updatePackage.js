@@ -29,12 +29,7 @@ async function main() {
 
   const item = { date };
 
-  const keys = Object.keys(downloads).sort((v1, v2) => {
-    const sv1 = semverRegex().exec(v1)[0] || v1;
-    const sv2 = semverRegex().exec(v2)[0] || v2;
-
-    return semver.rcompare(sv1, sv2);
-  });
+  const keys = Object.keys(downloads);
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
@@ -43,9 +38,35 @@ async function main() {
       continue;
     }
     item[key] = downloads[key];
+
+    // set 0 for previously not existing versions
+    for (let j = 0; j < savedData.downloads.length; j++) {
+      if (savedData.downloads[j][key] === undefined) {
+        savedData.downloads[j][key] = 0;
+      }
+    }
   }
 
   savedData.downloads.push(item);
+
+  // sort the array so recent versions come first
+  savedData.downloads = savedData.downloads.map((item) => {
+    const result = { date: item.date };
+    const keys = Object.keys(item)
+      .filter((key) => key !== 'date')
+      .sort((v1, v2) => {
+        const sv1 = semverRegex().exec(v1)[0] || v1;
+        const sv2 = semverRegex().exec(v2)[0] || v2;
+
+        return semver.rcompare(sv1, sv2);
+      });
+
+    for (let i = 0; i < keys.length; i++) {
+      result[keys[i]] = item[keys[i]];
+    }
+
+    return result;
+  });
 
   const updatedJson = JSON.stringify(savedData, null, 2);
   await writeFile(path.join(__dirname, 'docs', `${package}.json`), updatedJson);
