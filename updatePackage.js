@@ -16,7 +16,8 @@ async function main() {
   const data = await res.json();
 
   const today = new Date();
-  const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+  const date =
+    ('0' + today.getDate()).slice(-2) + '/' + ('0' + (today.getMonth() + 1)).slice(-2) + '/' + today.getFullYear();
 
   const saved = await readFile(path.join(__dirname, 'docs', `${package}.json`));
   const savedData = JSON.parse(saved);
