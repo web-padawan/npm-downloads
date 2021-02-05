@@ -3,6 +3,8 @@ const fs = require('fs');
 const util = require('util');
 const path = require('path');
 const fetch = require('node-fetch');
+const semver = require('semver');
+const semverRegex = require('semver-regex');
 
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
@@ -27,7 +29,15 @@ async function main() {
 
   const item = { date };
 
-  for (let key in downloads) {
+  const keys = Object.keys(downloads).sort((v1, v2) => {
+    const sv1 = semverRegex().exec(v1)[0] || v1;
+    const sv2 = semverRegex().exec(v2)[0] || v2;
+
+    return semver.rcompare(sv1, sv2);
+  });
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     // ignore old pre-releases
     if (key.indexOf('pre') !== -1) {
       continue;
