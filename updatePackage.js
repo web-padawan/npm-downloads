@@ -20,17 +20,22 @@ async function main() {
   const savedData = JSON.parse(saved);
 
   if (!savedData.downloads) {
-    savedData.downloads = {};
+    savedData.downloads = [];
   }
 
   const { downloads } = data;
 
+  const item = { date };
+
   for (let key in downloads) {
-    if (!savedData.downloads[key]) {
-      savedData.downloads[key] = {};
+    // ignore old pre-releases
+    if (key.indexOf('pre') !== -1) {
+      continue;
     }
-    savedData.downloads[key][date] = downloads[key];
+    item[key] = downloads[key];
   }
+
+  savedData.downloads.push(item);
 
   const updatedJson = JSON.stringify(savedData, null, 2);
   await writeFile(path.join(__dirname, 'docs', `${package}.json`), updatedJson);
