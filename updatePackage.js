@@ -26,7 +26,7 @@ async function main() {
   const { downloads } = data;
 
   for (let key in downloads) {
-    if (!savedData[key]) {
+    if (!savedData.downloads[key]) {
       savedData.downloads[key] = {};
     }
     savedData.downloads[key][date] = downloads[key];

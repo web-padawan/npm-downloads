@@ -4,7 +4,7 @@ on:
     - cron: '5 0 * * 1'
 
 jobs:
-  extract_job:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
