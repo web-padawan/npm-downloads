@@ -2,6 +2,8 @@ vaadin-accordion
 vaadin-app-layout
 vaadin-avatar
 vaadin-button
+vaadin-board
+vaadin-charts
 vaadin-checkbox
 vaadin-combo-box
 vaadin-confirm-dialog
