@@ -12,14 +12,16 @@ const readFile = util.promisify(fs.readFile);
 const package = process.argv[2] || process.exit(1);
 
 async function main() {
-  const res = await fetch(`https://api.npmjs.org/versions/@vaadin%2f${package}/last-week`);
+  const FILE_NAME = `${package.replace('@vaadin/', '')}.json`;
+
+  const res = await fetch(`https://api.npmjs.org/versions/${package.replace('/', '%2f')}/last-week`);
   const data = await res.json();
 
   const today = new Date();
   const date =
     ('0' + today.getDate()).slice(-2) + '/' + ('0' + (today.getMonth() + 1)).slice(-2) + '/' + today.getFullYear();
 
-  const saved = await readFile(path.join(__dirname, 'docs', `${package}.json`));
+  const saved = await readFile(path.join(__dirname, 'docs', FILE_NAME));
   const savedData = JSON.parse(saved);
 
   if (!savedData.downloads) {
@@ -34,8 +36,8 @@ async function main() {
 
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
-    // ignore old pre-releases
-    if (key.indexOf('pre') !== -1) {
+    // ignore dev versions and pre-releases
+    if (['dev', 'alpha', 'beta', 'rc'].some((s) => key.includes(s))) {
       continue;
     }
     item[key] = downloads[key];
@@ -70,7 +72,7 @@ async function main() {
   });
 
   const updatedJson = JSON.stringify(savedData, null, 2);
-  await writeFile(path.join(__dirname, 'docs', `${package}.json`), updatedJson);
+  await writeFile(path.join(__dirname, 'docs', FILE_NAME), updatedJson);
 }
 
 main();

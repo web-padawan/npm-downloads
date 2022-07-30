@@ -9,7 +9,7 @@
 
 set -e
 list='repos.txt'
-repos=`grep 'vaadin' $list`
+repos=`grep '@vaadin' $list`
 
 updatePackage() {
   node updatePackage.js $1
